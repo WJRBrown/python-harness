@@ -8,7 +8,7 @@ from tests import TestRunner
 def command_line_args():
     parser = argparse.ArgumentParser(description='Run the Test Harness against a root directory of tests and target webpage', usage='python3 harness.py -r /path/to/tests')
     parser.add_argument("-r", action = "store", help = "Test root directory", dest = "root")
-    parser.add_argument("-t", action = "store", help = "Target webpage", dest = "target", default=None)
+    parser.add_argument("-t", action = "store", help = "Target webpage", dest = "target", default="https://www.python.org")
     
     return parser.parse_args()
 
@@ -42,6 +42,7 @@ class Harness():
         except:
             # set error
             # report failure
+            print("Failed importing test file as module")
             return False
         
     def execute_commands(self):
@@ -71,6 +72,7 @@ class Harness():
             self.run_test()
             if self.runner.message:
                 print(self.runner.message)
+                self.runner.set_message("")
             else:
                 pass
         
