@@ -8,5 +8,5 @@ def Run(Runner):
     if title == "Our Blogs | Python.org":
         return True
     else:
-        Runner.set_message("Expected: 'Welcome to Python.org'\nActual: '%s'" % title)
+        Runner.set_message("Expected: 'Our Blogs | Python.org'\nActual: '%s'" % title)
         return False
