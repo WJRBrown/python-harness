@@ -17,7 +17,7 @@ def find_test_list(root_path):
     for subdir, dirs, files in os.walk(root_path):
         for file in files:
             if "test" in file:
-                file_paths.append(file)
+                file_paths.append(os.path.join(subdir, file))
     return sorted(file_paths)
 
 class Harness():
@@ -31,9 +31,11 @@ class Harness():
     def load_test(self):
         global Module
         global module_name
-        module_name = os.path.splitext(self.current_test)[0]
+        dir_name = os.path.dirname(self.current_test)
+        base_name = os.path.basename(self.current_test)
+        module_name = os.path.splitext(base_name)[0]
         print(module_name)
-        sys.path.append("/Users/will.brown/Desktop/directory/subdirectory")
+        sys.path.append(dir_name)
         Module = importlib.import_module(module_name)
         try:
             return True
@@ -41,10 +43,6 @@ class Harness():
             # set error
             # report failure
             return False
-            
-    def clear_test(self):
-        del sys.modules[module_name]
-        sys.path.remove("/Users/will.brown/Desktop/directory/subdirectory")
         
     def execute_commands(self):
         if hasattr(Module, "Run"):
@@ -66,7 +64,6 @@ class Harness():
     def run_test(self):
         self.load_test()
         self.execute_commands()
-        self.clear_test()
         
     def run_all_tests(self):
         for test in self.tests:
